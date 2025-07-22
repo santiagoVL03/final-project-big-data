@@ -1,3 +1,4 @@
+from app.modules.visual.route import visual_bp
 from app.modules.chapter.route import chapter_bp
 from app.modules.comic.route import comic_bp
 from app.modules.like.route import like_bp
@@ -8,6 +9,7 @@ from app.db.db import db
 
 def initialize_route(app: Flask):
     with app.app_context():
+        app.register_blueprint(visual_bp, url_prefix='/api/v1/visual')
         app.register_blueprint(chapter_bp, url_prefix='/api/v1/chapter')
         app.register_blueprint(comic_bp, url_prefix='/api/v1/comic')
         app.register_blueprint(like_bp, url_prefix='/api/v1/like')
