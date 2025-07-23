@@ -1,0 +1,14 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "COMIC_BD",
+            "group": "comic-big-data",
+            "database": "comics_bd",
+            "username": "postgres"
+        }
+    ]
+}

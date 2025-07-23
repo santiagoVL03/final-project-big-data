@@ -16,7 +16,7 @@ HADOOP_HOME=/home/hduser/hadoop-3.3.2
 FLINK_HOME=/home/hduser/flink-1.20.2
 
 # ========= INICIALIZACION DE FLINK =========
-if ! pgrep -f "flink" > /dev/null; then
+if ! jps | grep -q "StandaloneSessionClusterEntrypoint"; then
     echo "[INFO] Starting Flink cluster..."
     $FLINK_HOME/bin/start-cluster.sh
 else

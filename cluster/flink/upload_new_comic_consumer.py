@@ -32,3 +32,12 @@ def main():
 
     env.execute("Kafka Upload New Comic Consumer")
 main()
+
+# How to run:
+
+"""
+  /home/hduser/flink-1.20.2/bin/flink run \
+  -py upload_new_comic_consumer.py \
+  -pyclientexec /home/hduser/miniconda3/envs/pyflink310/bin/python \
+  -pyexec /home/hduser/miniconda3/envs/pyflink310/bin/python
+"""
