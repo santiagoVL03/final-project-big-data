@@ -1,10 +1,10 @@
 class Comic:
     def __init__(self, 
-                 title, 
-                 author, 
-                 description,
-                 date_uploaded=None,
-                 comic_id=None
+                 title: str, 
+                 author: str, 
+                 description: str,
+                 date_uploaded: str = str(),
+                 comic_id: str = str()
                  ):
         self.title = title
         self.author = author

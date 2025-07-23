@@ -11,6 +11,7 @@ eval "$(conda shell.bash hook)"
 conda activate pyflink310
 
 # ========= EJECUCIÓN DE FLINK =========
-$FLINK_HOME/bin/flink run -py $SCRIPT_PATH \
-  --pyFiles $SCRIPT_PATH \
-  --jarfile $JAR_PATH
+$FLINK_HOME/bin/flink run \
+  -py $SCRIPT_PATH \
+  -pyclientexec /home/hduser/miniconda3/envs/pyflink310/bin/python \
+  -pyexec /home/hduser/miniconda3/envs/pyflink310/bin/python
