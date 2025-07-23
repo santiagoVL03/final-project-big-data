@@ -4,7 +4,8 @@ from app.models.entities.comic import Comic
 
 upload_new_comic_bp = Blueprint('upload_new_comic', __name__)
 upload_new_comic_controller = Upload_new_comicController()
-@upload_new_comic_bp.route('/', methods=['POST'])
+@upload_new_comic_bp.route('/', methods=['POST'], strict_slashes=False)
+
 def index():
     """ Example endpoint with simple greeting.
     ---

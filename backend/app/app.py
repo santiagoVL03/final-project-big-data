@@ -1,6 +1,7 @@
 from flask import Flask
 from app.config.config import get_config_by_name
 from app.initialize_functions import initialize_route, initialize_db, initialize_swagger
+from flask_cors import CORS
 
 def create_app(config=None) -> Flask:
     """
@@ -15,6 +16,8 @@ def create_app(config=None) -> Flask:
     app = Flask(__name__)
     if config:
         app.config.from_object(get_config_by_name(config))
+    
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
 
     # Initialize extensions
     initialize_db(app)
