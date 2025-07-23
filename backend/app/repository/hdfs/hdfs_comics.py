@@ -1,6 +1,9 @@
+from io import BytesIO
+import mimetypes
+from typing import cast
 from app.models.entities.comic import Comic
 from app.utils.ssh_conections import execute_simple_command
-
+from hdfs import InsecureClient
 import base64
 import tempfile
 import json
@@ -57,3 +60,52 @@ def upload_comic_to_hdfs(comic_data: Comic, cover: str, content: str) -> bool:
 
     finally:
         close_ssh_client(client)
+
+def get_comic_images(comic_ids: list[str]) -> list[tuple[str, str]]:
+    """Get the cover images of the comics from the metadata.
+
+    Args:
+        comic_ids (list[str]): The list of comic IDs.
+
+    Returns:
+        list[tuple[str, str]]: The list of cover image paths and their corresponding comic IDs.
+    """
+    try:
+        hdfs_client = InsecureClient('http://localhost:9870', user='hduser')
+        cover_paths = []
+        preview_paths = []
+        
+        for comic_id in comic_ids:
+            if not hdfs_client.status(f'/comics/{comic_id}/content', strict=False):
+                print(f"Comic ID {comic_id} does not exist in HDFS.")
+                continue
+            cover_paths.append(f'/comics/{comic_id}/cover')
+            preview_paths.append(f'/comics/{comic_id}/content')
+        if not cover_paths or not preview_paths:
+            print("No valid comic IDs provided or no comics found in HDFS.")
+            return []
+        return list(zip(cover_paths, preview_paths))
+    except:
+        # Handle exceptions such as connection errors or file not found
+        print("An error occurred while accessing HDFS.")
+        return []
+    
+def get_comic_image(comic_id: str) -> tuple[bytes, str]:
+    try:
+        hdfs_client = InsecureClient('http://localhost:9870', user='hduser')
+        hdfs_path = f'/comics/{comic_id}/cover'
+
+        with hdfs_client.read(hdfs_path) as reader:
+            reader = cast(BytesIO, reader)
+            image_data = reader.read()
+            if not isinstance(image_data, bytes):
+                raise ValueError("Image data is not in bytes format")
+
+        guessed_type = mimetypes.guess_type(hdfs_path)[0] 
+        extension = guessed_type.split('/')[1] if guessed_type else 'png'
+
+        return image_data, extension
+
+    except Exception as e:
+        print(f"[HDFS ERROR] {e}")
+        return b'', 'png'
