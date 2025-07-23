@@ -9,6 +9,17 @@
             "group": "comic-big-data",
             "database": "comics_bd",
             "username": "postgres"
+        },
+        {
+            "previewLimit": 50,
+            "server": "main",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "gib-data",
+            "group": "comics-data",
+            "database": "comics_bd",
+            "username": "postgres",
+            "password": "1234"
         }
     ]
 }

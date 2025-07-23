@@ -28,11 +28,11 @@ class Upload_new_comicController:
         # if not cover or not content:
         #     return json.dumps({"error": "Cover and content must be provided"}), 400
 
-        # result_upload_comic_hdfs = upload_comic_to_hdfs(
-        #     comic_data=comic_details,
-        #     cover=cover,
-        #     content=content
-        # )
+        result_upload_comic_hdfs = upload_comic_to_hdfs(
+            comic_data=comic_details,
+            cover=cover,
+            content=content
+        )
 
         # if not result_upload_comic_hdfs:
         #     return json.dumps({"error": "Failed to upload comic to HDFS"}), 500
