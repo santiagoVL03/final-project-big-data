@@ -38,13 +38,13 @@ def get_metadata_comics_feed(id_user: int = int(0)) -> list[Comic]:
             for msg in consumer:
                 if msg.value.get("correlation_id") != correlation_id:
                     continue
-                data_list = msg.value["data"]
+                data_list = msg.value["comics_metadata"]
                 
                 for data in data_list:
                     comics.append(Comic(
                         title=data.get('title', 'Default Comic'),
                         author=data.get('author', 'Unknown'),
-                        description=data.get('description', 'This is a default comic description.'),
+                        description=data.get('content', 'This is a default comic description.'),
                         date_uploaded=data.get('date_uploaded', ''),
                         comic_id=data.get('comic_id', '')
                     ))
