@@ -77,7 +77,7 @@ main()
 
 """
   /home/hduser/flink-1.20.2/bin/flink run \
-  -py /shared/final-project-big-data/cluster/flink/get_feed/get_feed.py \
+  -py /home/hduser/final-project-big-data/cluster/flink/likes/likes_to_postgres_flink.py \
   -pyclientexec /home/hduser/miniconda3/envs/pyflink310/bin/python \
   -pyexec /home/hduser/miniconda3/envs/pyflink310/bin/python
 """
