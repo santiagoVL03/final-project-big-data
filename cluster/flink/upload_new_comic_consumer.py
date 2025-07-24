@@ -8,7 +8,7 @@ def main():
     env = StreamExecutionEnvironment.get_execution_environment()
 
     kafka_props = {
-        'bootstrap.servers': 'localhost:9097',
+        'bootstrap.servers': 'main:9097',
         'group.id': 'flink-upload-new-comic-consumer'
     }
 

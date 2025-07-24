@@ -35,7 +35,7 @@ def upload_comic_to_hdfs(comic_data: Comic, cover: str, content: str) -> bool:
             local_content_path = f_content.name
 
         with tempfile.NamedTemporaryFile(delete=False, mode="w") as f_meta:
-            f_meta.write(str(comic_data.to_dict()))
+            json.dump(comic_data.to_dict(), f_meta)
             local_meta_path = f_meta.name
 
         # Subir archivos por SFTP
@@ -71,7 +71,7 @@ def get_comic_images(comic_ids: list[str]) -> list[tuple[str, str]]:
         list[tuple[str, str]]: The list of cover image paths and their corresponding comic IDs.
     """
     try:
-        hdfs_client = InsecureClient('http://localhost:9870', user='hduser')
+        hdfs_client = InsecureClient('http://main:9870', user='hduser')
         cover_paths = []
         preview_paths = []
         
@@ -92,7 +92,7 @@ def get_comic_images(comic_ids: list[str]) -> list[tuple[str, str]]:
     
 def get_comic_image(comic_id: str) -> tuple[bytes, str]:
     try:
-        hdfs_client = InsecureClient('http://localhost:9870', user='hduser')
+        hdfs_client = InsecureClient('http://main:9870', user='hduser')
         hdfs_path = f'/comics/{comic_id}/cover'
 
         with hdfs_client.read(hdfs_path) as reader:

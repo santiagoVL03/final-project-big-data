@@ -15,19 +15,18 @@ def read_metadata_from_hdfs() -> list[dict]:
     """
     try:
         # Ajusta el hostname y puerto si es necesario
-        client = InsecureClient('http://localhost:9870', user='hduser')
+        client = InsecureClient('http://main:9870', user='hduser')
 
         comic_paths = client.list('/comics', status=False)  # solo nombres, sin detalles
         if not comic_paths:
             return [{"error": "No hay cómics en HDFS"}]
 
-        selected_ids = random.sample(comic_paths, min(5, len(comic_paths)))
+        selected_ids = random.sample(comic_paths, min(3, len(comic_paths)))
 
         metadatas = []
         for comic_id in selected_ids:
             path = f"/comics/{comic_id}/metadata"
             with client.read(path, encoding='utf-8') as reader:
-                reader = json.JSONDecoder()
                 metadata = json.load(reader) # type: ignore
                 metadatas.append(metadata)
 
@@ -41,7 +40,7 @@ def send_response_to_kafka(correlation_id, user_id) -> None:
     Envia la metadata al tópico 'responsefeed'
     """
     producer = KafkaProducer(
-        bootstrap_servers='localhost:9097',
+        bootstrap_servers='main:9097',
         value_serializer=lambda v: json.dumps(v).encode('utf-8')
     )
 
@@ -63,7 +62,7 @@ def main():
     t_env = StreamTableEnvironment.create(env, environment_settings=settings)
 
     kafka_props = {
-        'bootstrap.servers': 'localhost:9097',
+        'bootstrap.servers': 'main:9097',
         'group.id': 'flink-upload-new-comic-consumer'
     }
 
@@ -80,11 +79,9 @@ def main():
 
     class ProcessRequest(MapFunction):
         def map(self, value):
-            data = value.get("data", {})
-            correlation_id = data.get("correlation_id", "")
-            id_user = data.get("id_user", "")
+            correlation_id = str(value.get("correlation_id", ""))
+            id_user = str(value.get("id_user", ""))
 
-            # Llama a función que lee metadata y la publica en Kafka
             send_response_to_kafka(correlation_id, id_user)
 
             return Row(correlation_id, id_user)
@@ -93,7 +90,7 @@ def main():
         Types.STRING(),  # correlation_id
         Types.STRING()   # id_user
     ]))
-
+    
     env.execute("Get Feed Flink Job")
 
 if __name__ == "__main__":
@@ -112,8 +109,13 @@ if __name__ == "__main__":
 """
    For testing you can create a custom consumer script that sends a request to the 'requestfeed' topic.
     Example:
-    /home/hduser/kafka_2.13-3.5.1/bin/kafka-console-producer.sh \
-    --bootstrap-server localhost:9097 \
-    --topic requestfeed \
-
+    /home/hduser/kafka_2.13-3.6.2/bin/kafka-console-consumer.sh \
+    --bootstrap-server main:9097 \
+    --topic requestfeed
+    
+    Example:
+    /home/hduser/kafka_2.13-3.6.2/bin/kafka-console-consumer.sh \
+    --bootstrap-server main:9097 \
+    --topic responsefeed \
+    --from-beginning
 """

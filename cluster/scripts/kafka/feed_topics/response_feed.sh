@@ -6,7 +6,7 @@ KAFKA_HOME="/home/hduser/kafka_2.13-3.6.2"
 # Crear tópico 'responsefeed'
 $KAFKA_HOME/bin/kafka-topics.sh --create \
   --topic responsefeed \
-  --bootstrap-server localhost:9097 \
+  --bootstrap-server main:9097 \
   --partitions 3 \
   --replication-factor 3
 

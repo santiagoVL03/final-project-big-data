@@ -3,7 +3,7 @@ import json
 
 def send_visualization_message(data_dictionary: dict):
     producer = KafkaProducer(
-        bootstrap_servers='localhost:9093',
+        bootstrap_servers='main:9093',
         value_serializer=lambda v: json.dumps(v).encode('utf-8')
     )
     

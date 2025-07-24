@@ -12,7 +12,7 @@ def main():
     t_env = StreamTableEnvironment.create(env, environment_settings=settings)
 
     kafka_props = {
-        'bootstrap.servers': 'localhost:9097',
+        'bootstrap.servers': 'main:9097',
         'group.id': 'flink-upload-new-comic-consumer'
     }
 
