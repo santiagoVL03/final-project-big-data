@@ -75,7 +75,7 @@ main()
 
 """
   /home/hduser/flink-1.20.2/bin/flink run \
-  -py /shared/final-project-big-data/cluster/flink/upload_new_comic_flink.py \
+  -py /shared/final-project-big-data/cluster/flink/upload_comic/upload_new_comic_flink.py \
   -pyclientexec /home/hduser/miniconda3/envs/pyflink310/bin/python \
   -pyexec /home/hduser/miniconda3/envs/pyflink310/bin/python
 """
