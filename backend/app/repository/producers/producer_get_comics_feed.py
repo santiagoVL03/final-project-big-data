@@ -13,7 +13,7 @@ def get_metadata_comics_feed(id_user: int = int(0)) -> list[Comic]:
         # Return a default feed with better options
         try:
             producer = KafkaProducer(
-                bootstrap_servers='main:9097',
+                bootstrap_servers='main:9092',
                 value_serializer=lambda v: json.dumps(v).encode('utf-8')
             )
             
@@ -29,7 +29,7 @@ def get_metadata_comics_feed(id_user: int = int(0)) -> list[Comic]:
             consumer = KafkaConsumer(
                 'responsefeed',
                 group_id=f'feed_response_{id_user}',
-                bootstrap_servers='main:9097',
+                bootstrap_servers='main:9092',
                 auto_offset_reset='earliest',
                 enable_auto_commit=True,
                 value_deserializer=lambda x: json.loads(x.decode('utf-8'))

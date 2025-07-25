@@ -4,3 +4,7 @@ python-dotenv
 pytest
 gunicorn
 flasgger
+hdfs
+kafka-python
+requests
+flask_cors

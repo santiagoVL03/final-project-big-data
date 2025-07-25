@@ -1,19 +1,20 @@
 #!/bin/bash
 
-KAFKA_HOME=/home/hduser/kafka_2.13-3.6.2
+KAFKA_HOME=/home/santiago/kafka_2.13-3.6.2
 CLUSTER_ID="W5KJ8mdcReOQyVRe9nm_1w"
 
-for i in 1 2 3; do
-  CONFIG="$KAFKA_HOME/config/kraft/broker${i}.properties"
-  DATA_DIR="/tmp/kafka-logs-${i}"
-  
-  echo "[INFO] Formateando broker $i en $DATA_DIR"
-  rm -rf "$DATA_DIR"
-  "$KAFKA_HOME/bin/kafka-storage.sh" format -t "$CLUSTER_ID" -c "$CONFIG"
-done
+CONFIG="$KAFKA_HOME/config/kraft/broker.properties"
+DATA_DIR="/tmp/kafka-logs"
 
-HADOOP_HOME=/home/hduser/hadoop-3.3.2
-FLINK_HOME=/home/hduser/flink-1.20.2
+echo "[INFO] Formateando broker en $DATA_DIR"
+
+rm -rf "$DATA_DIR"
+
+
+"$KAFKA_HOME/bin/kafka-storage.sh" format -t "$CLUSTER_ID" -c "$CONFIG"
+
+HADOOP_HOME=/home/santiago/hadoop-3.3.2
+FLINK_HOME=/home/santiago/flink-1.20.2
 
 # ========= INICIALIZACION DE FLINK =========
 if ! jps | grep -q "StandaloneSessionClusterEntrypoint"; then
@@ -24,11 +25,10 @@ else
 fi
 
 # ========= INICIALIZACION DE KAFKA =========
+
 if ! jps | grep -q "Kafka"; then
     echo "[INFO] Starting Kafka brokers..."
-    for i in 1 2 3; do
-        "$KAFKA_HOME/bin/kafka-server-start.sh" -daemon "$KAFKA_HOME/config/kraft/broker${i}.properties" &
-    done
+    "$KAFKA_HOME/bin/kafka-server-start.sh" -daemon "$KAFKA_HOME/config/kraft/broker.properties" &
 else
     echo "[INFO] Kafka brokers are already running."
 fi
@@ -36,7 +36,7 @@ fi
 # ========= INICIALIZACION DE HDFS =========
 if ! hdfs dfsadmin -report > /dev/null 2>&1; then
     echo "[INFO] Starting HDFS namenode and datanodes..."
-    $HADOOP_HOME/sbin/start-all.sh
+    $HADOOP_HOME/sbin/start-dfs.sh
 else
     echo "[INFO] HDFS is already running."
 fi

@@ -3,7 +3,7 @@ import json
 
 def execute_simple_command(command: str) -> tuple[str, str]:
     """Execute a simple command on the local machine."""
-    with open("/shared/final-project-big-data/backend/app/credentials/ssh_conection.json") as f:
+    with open("./backend/app/credentials/ssh_conection.json") as f:
         config = json.load(f)
     client = create_ssh_client(
         server_ip=config["server_ip"],
@@ -25,7 +25,7 @@ def create_ssh_client(server_ip: str, server_port: int, username: str, password:
 def execute_remote_command(ssh_client: paramiko.SSHClient, command: str) -> tuple[str, str]:
     """Execute a command on the remote server."""
     export_env = (
-            'export HADOOP_HOME=/home/hduser/hadoop-3.3.2 && '
+            'export HADOOP_HOME=/home/santiago/hadoop-3.3.2 && '
             'export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64 && '
             'export PATH=$HADOOP_HOME/sbin:$HADOOP_HOME/bin:$HIVE_HOME/bin:$PATH'
         )

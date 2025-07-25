@@ -15,7 +15,7 @@ def read_metadata_from_hdfs() -> list[dict]:
     """
     try:
         # Ajusta el hostname y puerto si es necesario
-        client = InsecureClient('http://main:9870', user='hduser')
+        client = InsecureClient('http://main:9870', user='santiago')
 
         comic_paths = client.list('/comics', status=False)  # solo nombres, sin detalles
         if not comic_paths:
@@ -40,7 +40,7 @@ def send_response_to_kafka(correlation_id, user_id) -> None:
     Envia la metadata al tópico 'responsefeed'
     """
     producer = KafkaProducer(
-        bootstrap_servers='main:9097',
+        bootstrap_servers='main:9092',
         value_serializer=lambda v: json.dumps(v).encode('utf-8')
     )
 
@@ -62,7 +62,7 @@ def main():
     t_env = StreamTableEnvironment.create(env, environment_settings=settings)
 
     kafka_props = {
-        'bootstrap.servers': 'main:9097',
+        'bootstrap.servers': 'main:9092',
         'group.id': 'flink-upload-new-comic-consumer'
     }
 
@@ -100,22 +100,22 @@ if __name__ == "__main__":
 # How to run:
 
 """
-  /home/hduser/flink-1.20.2/bin/flink run \
-  -py /shared/final-project-big-data/cluster/flink/get_feed/get_feed.py \
-  -pyclientexec /home/hduser/miniconda3/envs/pyflink310/bin/python \
-  -pyexec /home/hduser/miniconda3/envs/pyflink310/bin/python
+  /home/santiago/flink-1.20.2/bin/flink run \
+  -py /home/santiago/final-project-big-data/cluster/flink/get_feed/get_feed.py \
+  -pyclientexec /home/santiago/miniconda3/envs/pyflink310/bin/python \
+  -pyexec /home/santiago/miniconda3/envs/pyflink310/bin/python
 """
 
 """
    For testing you can create a custom consumer script that sends a request to the 'requestfeed' topic.
     Example:
-    /home/hduser/kafka_2.13-3.6.2/bin/kafka-console-consumer.sh \
-    --bootstrap-server main:9097 \
+    /home/santiago/kafka_2.13-3.6.2/bin/kafka-console-consumer.sh \
+    --bootstrap-server main:9092 \
     --topic requestfeed
     
     Example:
-    /home/hduser/kafka_2.13-3.6.2/bin/kafka-console-consumer.sh \
-    --bootstrap-server main:9097 \
+    /home/santiago/kafka_2.13-3.6.2/bin/kafka-console-consumer.sh \
+    --bootstrap-server main:9092 \
     --topic responsefeed \
     --from-beginning
 """

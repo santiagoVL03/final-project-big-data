@@ -11,7 +11,7 @@ import json
 def upload_comic_to_hdfs(comic_data: Comic, cover: str, content: str) -> bool:
     from app.utils.ssh_conections import create_ssh_client, execute_remote_command, close_ssh_client
 
-    with open("/shared/final-project-big-data/backend/app/credentials/ssh_conection.json") as f:
+    with open("./backend/app/credentials/ssh_conection.json") as f:
         config = json.load(f)
 
     client = create_ssh_client(
@@ -71,7 +71,7 @@ def get_comic_images(comic_ids: list[str]) -> list[tuple[str, str]]:
         list[tuple[str, str]]: The list of cover image paths and their corresponding comic IDs.
     """
     try:
-        hdfs_client = InsecureClient('http://main:9870', user='hduser')
+        hdfs_client = InsecureClient('http://main:9870', user='santiago')
         cover_paths = []
         preview_paths = []
         
@@ -92,7 +92,7 @@ def get_comic_images(comic_ids: list[str]) -> list[tuple[str, str]]:
     
 def get_comic_image(comic_id: str) -> tuple[bytes, str]:
     try:
-        hdfs_client = InsecureClient('http://main:9870', user='hduser')
+        hdfs_client = InsecureClient('http://main:9870', user='santiago')
         hdfs_path = f'/comics/{comic_id}/cover'
 
         with hdfs_client.read(hdfs_path) as reader:

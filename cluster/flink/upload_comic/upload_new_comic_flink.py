@@ -12,7 +12,7 @@ def main():
     t_env = StreamTableEnvironment.create(env, environment_settings=settings)
 
     kafka_props = {
-        'bootstrap.servers': 'main:9097',
+        'bootstrap.servers': 'main:9092',
         'group.id': 'flink-upload-new-comic-consumer'
     }
 
@@ -74,8 +74,8 @@ main()
 # How to run:
 
 """
-  /home/hduser/flink-1.20.2/bin/flink run \
-  -py /shared/final-project-big-data/cluster/flink/upload_comic/upload_new_comic_flink.py \
-  -pyclientexec /home/hduser/miniconda3/envs/pyflink310/bin/python \
-  -pyexec /home/hduser/miniconda3/envs/pyflink310/bin/python
+  /home/santiago/flink-1.20.2/bin/flink run \
+  -py /home/santiago/final-project-big-data/cluster/flink/upload_comic/upload_new_comic_flink.py \
+  -pyclientexec /home/santiago/miniconda3/envs/pyflink310/bin/python \
+  -pyexec /home/santiago/miniconda3/envs/pyflink310/bin/python
 """

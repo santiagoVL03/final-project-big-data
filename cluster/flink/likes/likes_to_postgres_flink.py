@@ -14,7 +14,7 @@ def main():
 
     # Propiedades de Kafka
     kafka_props = {
-        'bootstrap.servers': '10.147.20.191:9097',  # IP real del broker Kafka
+        'bootstrap.servers': '10.147.20.191:9092',  # IP real del broker Kafka
         'group.id': 'flink-like-consumer'
     }
 
@@ -76,8 +76,8 @@ def main():
 main()
 
 """
-  /home/hduser/flink-1.20.2/bin/flink run \
-  -py /home/hduser/final-project-big-data/cluster/flink/likes/likes_to_postgres_flink.py \
-  -pyclientexec /home/hduser/miniconda3/envs/pyflink310/bin/python \
-  -pyexec /home/hduser/miniconda3/envs/pyflink310/bin/python
+  /home/santiago/flink-1.20.2/bin/flink run \
+  -py /home/santiago/final-project-big-data/cluster/flink/likes/likes_to_postgres_flink.py \
+  -pyclientexec /home/santiago/miniconda3/envs/pyflink310/bin/python \
+  -pyexec /home/santiago/miniconda3/envs/pyflink310/bin/python
 """
