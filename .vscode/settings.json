@@ -12,7 +12,7 @@
         },
         {
             "previewLimit": 50,
-            "server": "main",
+            "server": "10.147.20.17",
             "port": 5432,
             "driver": "PostgreSQL",
             "name": "gib-data",

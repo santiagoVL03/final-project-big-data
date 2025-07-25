@@ -6,7 +6,7 @@ from app.models.entities.comic import Comic
 def upload_new_comic(comic_data: Comic) -> bool:
     try:
         producer = KafkaProducer(
-            bootstrap_servers='main:9092',
+            bootstrap_servers='10.147.20.17:9092',
             value_serializer=lambda v: json.dumps(v).encode('utf-8')
         )
         print('Producer created successfully')
